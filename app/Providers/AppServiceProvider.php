@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
-use App\Repository\UserMailListRepository;
-use App\Repository\UserMailListRepositoryInterface;
+use App\Repository\MailRepository;
+use App\Repository\UserMailRepositoryInterface;
 use App\Services\GitProviderPackageService\GithubPackageService;
 use App\Services\GitProviderPackageService\GitProviderPackageInterface;
+use App\Services\UserNotificationService\NotifyUserEmailService;
+use App\Services\UserNotificationService\UserNotificationInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,8 +26,13 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-          UserMailListRepositoryInterface::class,
-          UserMailListRepository::class
+          UserMailRepositoryInterface::class,
+          MailRepository::class
+        );
+
+        $this->app->bind(
+          UserNotificationInterface::class,
+          NotifyUserEmailService::class
         );
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\OutdatedPackageController;
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +21,6 @@ Route::get('/', function () {
 
 Route::post('/list/outdated-packages', [OutdatedPackageController::class, 'listOutdatedPackages'])
   ->name('outdated.checker');
+
+
+Route::get('/db-test', [TestController::class, 'test']);

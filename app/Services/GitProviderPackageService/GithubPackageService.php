@@ -10,8 +10,6 @@ use App\Helpers\ComposerPackageParserTrait;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Log;
-use League\Flysystem\FileNotFoundException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GithubPackageService implements GitProviderPackageInterface
 {
