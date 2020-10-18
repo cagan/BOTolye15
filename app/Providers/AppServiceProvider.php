@@ -2,10 +2,15 @@
 
 namespace App\Providers;
 
+use App\Repository\UserMailListRepository;
+use App\Repository\UserMailListRepositoryInterface;
+use App\Services\GitProviderPackageService\GithubPackageService;
+use App\Services\GitProviderPackageService\GitProviderPackageInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+
     /**
      * Register any application services.
      *
@@ -13,7 +18,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(
+          GitProviderPackageInterface::class,
+          GithubPackageService::class
+        );
+
+        $this->app->bind(
+          UserMailListRepositoryInterface::class,
+          UserMailListRepository::class
+        );
     }
 
     /**
@@ -25,4 +38,5 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
+
 }
