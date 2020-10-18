@@ -23,4 +23,4 @@ Route::post('/list/outdated-packages', [OutdatedPackageController::class, 'listO
   ->name('outdated.checker');
 
 
-Route::get('/db-test', [TestController::class, 'test']);
+Route::get('/test', [TestController::class, 'test']);
