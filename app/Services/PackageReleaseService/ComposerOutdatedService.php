@@ -44,6 +44,7 @@ class ComposerOutdatedService implements ReleaseServiceInterface
                       'vendor' => $vendor,
                       'package' => $package,
                       'version' => $version,
+                      'latest_version' => $latestVersion,
                     ];
                 }
             }
@@ -52,8 +53,20 @@ class ComposerOutdatedService implements ReleaseServiceInterface
         return $outdatedPackages;
     }
 
+    /**
+     * I did things done by manually becuase packagist api doesn't show is the package outdated or not.
+     * I just compared by myself with some checks. It may not working properly for now. But it can be fixed.
+     *
+     * @param  string  $inputVersion
+     * @param  string  $latestVersion
+     *
+     * @return bool
+     */
     public function isPackageOutdated(string $inputVersion, string $latestVersion)
     {
+        // Remove Pipes or spaces
+        $inputVersion = preg_replace('/(\s|\|\|)+/', '', $inputVersion);
+        // Remove
         if (substr($latestVersion, 0, 1) === 'v') {
             $latestVersion = ltrim($latestVersion, 'v');
         }

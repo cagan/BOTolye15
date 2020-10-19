@@ -11,10 +11,14 @@ It only works with composer.json for now.
 ### Traditional Way
 - Download the repository.
 - `composer install`
+- Create a database with named botolye15
 - Fill .env DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD for your environment.
 - `php artisan migrate`
 - php artisan serve
 
+# API'S
+- Packagist
+- Github
 
 # Components I Used
 - Services:
@@ -26,6 +30,12 @@ It only works with composer.json for now.
     - MailRepository
 - Controller:
     - OutdatedPackageController
+- Command:
+    - NotifyUser
+- Mail:
+    - OutdatedRepositoryMail
+- Job:
+    - SendMailJob
 
 # Asking Myself
 ### Why I Used Laravel?

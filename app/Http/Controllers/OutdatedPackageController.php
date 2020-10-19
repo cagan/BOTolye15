@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Helpers\ComposerPackageParserTrait;
 use App\Http\Requests\OutdatedPackageRequest;
 use App\Services\PackageReleaseService\ComposerOutdatedService;
-use App\Services\PackageReleaseService\NpmOutdatedService;
 use App\Services\UserNotificationService\UserNotificationInterface;
 
 class OutdatedPackageController
@@ -28,9 +27,7 @@ class OutdatedPackageController
         // Outdated composer packages found
         if (!empty($outdatedComposerPackages)) {
             $emails = explode(',', $emails);
-            $notification
-              ->addEmailsToRepository($emails, $repositoryUrl)
-              ->notifyUsers($outdatedComposerPackages);
+            $notification->addEmailsToRepository($emails, $repositoryUrl)->notifyUsers($outdatedComposerPackages);
         }
 
         return [

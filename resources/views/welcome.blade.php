@@ -56,11 +56,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
                 </tbody>
             </table>
         </div>
@@ -75,11 +70,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
                 </tbody>
             </table>
         </div>
@@ -109,7 +99,11 @@
                         $('.composer-outdated-table').css({'visibility': 'visible'})
                         var outputHtml = ``;
                         data.composer_outdated.forEach(function (outdated) {
-                            outputHtml += `<tr><td>${outdated.vendor}</td><td>${outdated.package}</td><td>${outdated.version}</td></tr>`
+                            outputHtml += `<tr>
+                                <td>${outdated.vendor}</atd>
+                                <td>${outdated.package}</td>
+                                <td>${outdated.version}</td>
+                            </tr>`
                         });
 
                         $('.composer-outdated-table tbody').append(outputHtml);
