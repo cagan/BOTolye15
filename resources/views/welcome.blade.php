@@ -89,6 +89,11 @@
                     $('.composer-notification').css({'visibility': 'visible'})
                     var data = response.data;
 
+                    if (data.length === 0) {
+                        $('.composer-notification').text('No composer package found');
+                        return;
+                    }
+
                     if (typeof data.composer_outdated !== 'undefined' && data.composer_outdated.length === 0) {
                         if (data.composer_package_found) {
                             $('.composer-notification').text('No outdated package found');
