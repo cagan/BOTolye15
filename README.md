@@ -1,9 +1,8 @@
 # NOTE:
-I tried to make this project in 2 days and Packagist, NPM API's didn't help me well.
-Because of this I tried to make things more manually. I have some code mistakes but they can be fixed in time. I just 
-wanted to show you how I can make structure and improve it. I use dependency Injection and try to make it more solid. It can be better in time I believe it.
-By the way I couldn't make NPM comparation because I couldn't find anything that shows me inside of the package.json content.
-It only works with composer.json for now. 
+I use packagist API to get the package list of the searched repository. But I couldn't find NPM API for search repository.
+For now It only works with package.json. But it can be implemented easily later on.I use dependency Injection and try 
+to make it more solid. The main focus of this code base to show you that I can construct an application which is  easy
+for extending. I could not write fully functional tests because of the limited time. But I can add more features later.
 
 # How To Use?
 ### Use Docker (It could be buggy for now)
