@@ -108,7 +108,7 @@
                             </tr>`
                         });
 
-                        $('.composer-outdated-table tbody').append(outputHtml);
+                        $('.composer-outdated-table tbody').html(outputHtml);
                     }
                 },
             });

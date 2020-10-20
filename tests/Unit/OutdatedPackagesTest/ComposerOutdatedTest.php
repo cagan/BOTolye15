@@ -8,6 +8,7 @@ namespace Tests\Unit\OutdatedPackagesTest;
 
 use App\Services\GitProviderPackageService\GithubPackageService;
 use App\Services\PackageReleaseService\ComposerOutdatedService;
+use Composer\Semver\Comparator;
 use PHPUnit\Framework\TestCase;
 
 class ComposerOutdatedTest extends TestCase
@@ -75,6 +76,19 @@ class ComposerOutdatedTest extends TestCase
         $composerService = (new ComposerOutdatedService(new GithubPackageService()));
 
         $this->assertEquals(false, $composerService->isPackageOutdated($inputVersion, $latestVersion));
+    }
+
+    /**
+     * @test
+     */
+    public function redesign_comparator()
+    {
+        $inputVersion = "~1.10.0";
+        $latestVersion = "v1.18.0";
+
+        $composerService = (new ComposerOutdatedService(new GithubPackageService()));
+
+        $this->assertEquals(true, $composerService->isPackageOutdated($inputVersion, $latestVersion));
     }
 
 }
