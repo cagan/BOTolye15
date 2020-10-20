@@ -6,6 +6,7 @@ use App\Helpers\ComposerPackageParserTrait;
 use App\Http\Requests\OutdatedPackageRequest;
 use App\Services\PackageReleaseService\ComposerOutdatedService;
 use App\Services\UserNotificationService\UserNotificationInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class OutdatedPackageController
 {
@@ -24,20 +25,24 @@ class OutdatedPackageController
         $outdatedComposerPackages = $composerRelease->getOutdatedPackages($repositoryUrl);
         //        $outdatedNpmPackages = $npmRelease->getOutdatedPackages($repositoryUrl);
 
-        // Outdated composer packages found
-        if (!empty($outdatedComposerPackages)) {
-            $emails = explode(',', $emails);
-            $notification->addEmailsToRepository($emails, $repositoryUrl)->notifyUsers($outdatedComposerPackages);
+        if (empty($outdatedComposerPackages)) {
+            return response()->json([
+              'message' => 'No outdated package found',
+              'data' => [],
+            ])->setStatusCode(Response::HTTP_OK);
         }
 
-        return [
+        $emails = explode(',', $emails);
+        $notification->addEmailsToRepository($emails, $repositoryUrl)->notifyUsers($outdatedComposerPackages);
+
+        return response()->json([
           'message' => 'Outdated packages',
           'data' => [
             'composer_outdated' => $outdatedComposerPackages,
               //            'npm_outdated' => $outdatedNpmPackages,
             'composer_package_found' => $composerRelease->getPackageFoundStatus(),
           ],
-        ];
+        ])->setStatusCode(Response::HTTP_OK);
     }
 
 }

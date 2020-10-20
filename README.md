@@ -14,7 +14,9 @@ It only works with composer.json for now.
 - Create a database with named botolye15
 - Fill .env DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD for your environment.
 - `php artisan migrate`
-- php artisan serve
+- `php artisan serve`
+- `sudo crontab -e`
+- `* * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1`
 
 # API'S
 - Packagist

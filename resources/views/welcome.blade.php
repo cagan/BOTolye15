@@ -96,6 +96,8 @@
                             $('.composer-notification').text('No composer package found');
                         }
                     } else {
+                        $('.composer-notification').text('Email has been sent to the emails');
+
                         $('.composer-outdated-table').css({'visibility': 'visible'})
                         var outputHtml = ``;
                         data.composer_outdated.forEach(function (outdated) {

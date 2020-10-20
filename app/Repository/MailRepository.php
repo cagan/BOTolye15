@@ -8,6 +8,7 @@ namespace App\Repository;
 
 use App\Models\Mail;
 use App\Models\Repository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class MailRepository implements UserMailRepositoryInterface
 {
@@ -24,28 +25,32 @@ class MailRepository implements UserMailRepositoryInterface
 
     public function subscribeEmailsToRepository(array $emails, string $repositoryUrl)
     {
-        $repository = Repository::where('repository_url', $repositoryUrl)->first();
-        $mailIds = [];
+        try {
+            $repository = Repository::where('repository_url', $repositoryUrl)->first();
+            $mailIds = [];
 
-        if ($repository === null) {
-            $repository = Repository::create([
-              'repository_url' => $repositoryUrl,
-            ]);
-        }
-
-        foreach ($emails as $email) {
-            $mail = Mail::where('email_address', $email)->first();
-
-            if ($mail === null) {
-                $mail = Mail::create([
-                  'email_address' => $email,
+            if ($repository === null) {
+                $repository = Repository::create([
+                  'repository_url' => $repositoryUrl,
                 ]);
             }
 
-            $mailIds[] = $mail->id;
-        }
+            foreach ($emails as $email) {
+                $mail = Mail::where('email_address', $email)->first();
 
-        $repository->mails()->sync($mailIds);
+                if ($mail === null) {
+                    $mail = Mail::create([
+                      'email_address' => $email,
+                    ]);
+                }
+
+                $mailIds[] = $mail->id;
+            }
+
+            $repository->mails()->sync($mailIds);
+        } catch (ModelNotFoundException  | \Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 
     public function getAllMails()

@@ -8,7 +8,6 @@ namespace App\Services\UserNotificationService;
 
 use App\Jobs\SendMailJob;
 use App\Mail\OutdatedRepositoriesMail;
-use App\Models\Mail;
 use App\Repository\UserMailRepositoryInterface;
 use App\Services\PackageReleaseService\ComposerOutdatedService;
 use Illuminate\Support\Facades\Log;
@@ -31,6 +30,7 @@ class NotifyUserEmailService implements UserNotificationInterface
     public function addEmailsToRepository(array $emails, string $repositoryUrl): self
     {
         $this->emails = $emails;
+
         try {
             $this->mailRepository->subscribeEmailsToRepository($emails, $repositoryUrl);
         } catch (\Exception $e) {
