@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace Tests\Unit\HttpTests;
+namespace Tests\Unit\ClientTest;
 
 
 use App\Services\PackageRegistryService\PackagistRegistryService;
@@ -22,30 +22,15 @@ class PackagistHttpTest extends TestCase
      */
     public function it_should_fetch_packagist_repository_data_properly()
     {
-        $responseData = [
-          "package" => [
-            "name" => "symfony\/polyfill-mbstring",
-            "description" => "Symfony polyfill for the Mbstring extension",
-            "time" => "2015-10-25T13:17:47+00:00",
-            "maintainers" => [
-              "name" => "fabpot",
-              "avatar_url" => "https:\/\/www.gravatar.com\/avatar\/9a22d09f92d50fa3d2a16766d0ba52f8?d=identicon",
-            ],
-            "versions" => [
-              "dev-main" => [],
-              "v1.18.0" => [],
-              "v.17.2" => [],
-            ],
-          ],
-        ];
+        $responseData = file_get_contents(__DIR__ . '/../Fixtures/packagist_fixture.json');
 
         $mock = new MockHandler([
-          new Response(200, [], json_encode($responseData)),
+          new Response(200, [], $responseData),
         ]);
 
         $handlerStack = HandlerStack::create($mock);
-
         $client = new Client(['handler' => $handlerStack]);
+
         $packagistRegistryService = new PackagistRegistryService($client);
         $response = $packagistRegistryService->getLatestVersion('symfony', 'polyfill');
 

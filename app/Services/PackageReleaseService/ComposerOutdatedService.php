@@ -9,19 +9,20 @@ namespace App\Services\PackageReleaseService;
 use App\Services\GitProviderPackageService\GitProviderPackageInterface;
 use App\Services\PackageRegistryService\PackagistRegistryService;
 use Composer\Semver\Comparator;
-use Illuminate\Support\Facades\Log;
-use Monolog\Logger;
 
 class ComposerOutdatedService implements ReleaseServiceInterface
 {
 
     protected GitProviderPackageInterface $gitProvider;
 
+    protected PackagistRegistryService $packagistRegistry;
+
     protected bool $packageFound = false;
 
-    public function __construct(GitProviderPackageInterface $gitProvider)
+    public function __construct(GitProviderPackageInterface $gitProvider, PackagistRegistryService $packagistRegistry)
     {
         $this->gitProvider = $gitProvider;
+        $this->packagistRegistry = $packagistRegistry;
     }
 
     public function getOutdatedPackages(string $repositoryUrl)
@@ -40,7 +41,7 @@ class ComposerOutdatedService implements ReleaseServiceInterface
 
             if (count($vendorAndPackage) === 2) {
                 [$vendor, $package] = $vendorAndPackage;
-                $latestVersion = PackagistRegistryService::getLatestVersion($vendor, $package);
+                $latestVersion = $this->packagistRegistry->getLatestVersion($vendor, $package);
 
                 if ($this->isPackageOutdated($version, $latestVersion)) {
                     $outdatedPackages[] = [

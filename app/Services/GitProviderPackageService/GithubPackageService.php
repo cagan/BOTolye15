@@ -16,6 +16,19 @@ class GithubPackageService implements GitProviderPackageInterface
 
     use ComposerPackageParserTrait;
 
+    protected Client $client;
+
+    public function __construct(Client $client)
+    {
+        $this->client = $client;
+    }
+
+    /**
+     * @param  string  $repositoryUrl
+     *
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function getComposerPackages(string $repositoryUrl)
     {
         $vendor = $this->parseVendor($repositoryUrl);
@@ -23,8 +36,7 @@ class GithubPackageService implements GitProviderPackageInterface
         $apiUrl = "https://api.github.com/repos/$vendor/$package/contents/composer.json";
 
         try {
-            $response = (new Client())->get($apiUrl);
-
+            $response = $this->client->request('GET', $apiUrl);
             $bodyResponse = $response->getBody();
             $contents = $bodyResponse->getContents();
             $json = json_decode($contents);
@@ -32,7 +44,6 @@ class GithubPackageService implements GitProviderPackageInterface
 
             return array_merge($composerContent['require'], $composerContent['require-dev']);
         } catch (RequestException $e) {
-            Log::info("No composer package found");
             return [];
         }
     }
