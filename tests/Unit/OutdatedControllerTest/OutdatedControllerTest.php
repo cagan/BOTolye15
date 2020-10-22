@@ -7,8 +7,6 @@ namespace Tests\Unit\OutdatedControllerTest;
 
 
 use App\Http\Requests\OutdatedPackageRequest;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
