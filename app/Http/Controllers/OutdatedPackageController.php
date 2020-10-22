@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\ComposerPackageParserTrait;
 use App\Http\Requests\OutdatedPackageRequest;
 use App\Services\PackageReleaseService\ComposerOutdatedService;
+use App\Services\PackageReleaseService\NpmOutdatedService;
 use App\Services\UserNotificationService\UserNotificationInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,16 +14,28 @@ class OutdatedPackageController
 
     use ComposerPackageParserTrait;
 
-    public function listOutdatedPackages(
-      OutdatedPackageRequest $request,
-      ComposerOutdatedService $composerRelease,
-      //      NpmOutdatedService $npmRelease,
-      UserNotificationInterface $notification
+    protected ComposerOutdatedService $composerOutdated;
+
+    protected NpmOutdatedService $npmOutdated;
+
+    protected UserNotificationInterface $userNotification;
+
+    public function __construct(
+      ComposerOutdatedService $composerOutdated,
+      NpmOutdatedService $npmRelease,
+      UserNotificationInterface $userNotification
     ) {
+        $this->composerOutdated = $composerOutdated;
+        $this->npmOutdated = $npmRelease;
+        $this->userNotification = $userNotification;
+    }
+
+    public function listOutdatedPackages(OutdatedPackageRequest $request)
+    {
         $emails = $request->get('email');
         $repositoryUrl = $request->get('repository');
 
-        $outdatedComposerPackages = $composerRelease->getOutdatedPackages($repositoryUrl);
+        $outdatedComposerPackages = $this->composerOutdated->getOutdatedPackages($repositoryUrl);
         //        $outdatedNpmPackages = $npmRelease->getOutdatedPackages($repositoryUrl);
 
         if (empty($outdatedComposerPackages)) {
@@ -33,14 +46,14 @@ class OutdatedPackageController
         }
 
         $emails = explode(',', $emails);
-        $notification->addEmailsToRepository($emails, $repositoryUrl)->notifyUsers($outdatedComposerPackages);
+        $this->userNotification->addEmailsToRepository($emails, $repositoryUrl)->notifyUsers($outdatedComposerPackages);
 
         return response()->json([
           'message' => 'Outdated packages',
           'data' => [
             'composer_outdated' => $outdatedComposerPackages,
               //            'npm_outdated' => $outdatedNpmPackages,
-            'composer_package_found' => $composerRelease->getPackageFoundStatus(),
+            'composer_package_found' => $this->composerOutdated->getPackageFoundStatus(),
           ],
         ])->setStatusCode(Response::HTTP_OK);
     }
