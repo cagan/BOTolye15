@@ -57,7 +57,6 @@ class ComposerOutdatedService implements ReleaseServiceInterface
         return $outdatedPackages;
     }
 
-    // 1.0.0 , 1.2.3
     public function isPackageOutdated(string $inputVersion, string $latestVersion)
     {
         if ($inputVersion[0] === '^' || $inputVersion[0] === '~') {

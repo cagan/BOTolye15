@@ -49,7 +49,7 @@ class ComposerOutdatedTest extends TestCase
     /**
      * @test
      */
-    public function test_exec_version_comparation_if_both_are_equals()
+    public function test_exec_version_compare_if_both_are_equals()
     {
         $inputVersion = "2.1.1";
         $latestVersion = "2.1.1";
@@ -78,10 +78,21 @@ class ComposerOutdatedTest extends TestCase
 
         $this->assertEquals(true, $this->composerService->isPackageOutdated($inputVersion, $latestVersion));
 
-        $inputVersion = "2.3";
-        $latestVersion = "1.1";
+        $inputVersion = "1.3";
+        $latestVersion = "2.1";
 
-        $this->assertEquals(false, $this->composerService->isPackageOutdated($inputVersion, $latestVersion));
+        $this->assertEquals(true, $this->composerService->isPackageOutdated($inputVersion, $latestVersion));
     }
 
+
+    /**
+     * @test
+     */
+    public function it_should_be_check_correctly_with_special_symbol_version()
+    {
+        $inputVersion = "^1.5.3";
+        $latestVersion = "2.3.2";
+
+        $this->assertEquals(true, $this->composerService->isPackageOutdated($inputVersion, $latestVersion));
+    }
 }

@@ -9,7 +9,6 @@ namespace App\Services\GitProviderPackageService;
 use App\Helpers\ComposerPackageParserTrait;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use Illuminate\Support\Facades\Log;
 
 class GithubPackageService implements GitProviderPackageInterface
 {
